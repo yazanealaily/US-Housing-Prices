@@ -14,14 +14,14 @@ var svg = d3.select("#map").append("svg")
 var scale = 1100;
 var projection = d3.geo.albersUsa().scale(scale).translate([width/2, height/2]);
 
-var stateMap, metroMap;
+var stateMap, stateData;
 
 queue()
     .defer(d3.json, "data/STATE.json")
-    .defer(d3.json, "data/MSA.json")
+    .defer(d3.csv, "data/state-data.csv")
     .await(initVis);
 
-function initVis(error, STATE, MSA) {
+function initVis(error, STATE, DATA) {
 
     // Draw states map
         var states = topojson.feature(STATE, STATE.objects.STATE).features;
@@ -35,50 +35,14 @@ function initVis(error, STATE, MSA) {
                 .append("path")
                 .attr("d", d3.geo.path().projection(projection));
 
-    // Draw MSA map
-     var metroAreas = topojson.feature(MSA, MSA.objects.MSA).features;
-
-       metroMap =
-           svg.append("g")
-                .attr("class", "metro")
-                .selectAll("path")
-                .data(metroAreas)
-                .enter()
-                .append("path")
-                .attr("d", d3.geo.path().projection(projection))
-                .style("fill", "red")
-                .style("visibility", "hidden");
+    // Save housing data at state level in global variable
+    stateData = DATA;
 
      // Debugging
         console.log(STATE);
-        console.log(MSA);
+        console.log(DATA);
 }
 
 function updateVis() {
 
-    // Toggle between State and MSA views
-    $("#state-select").click(function(event){
-        event.preventDefault();
-        stateMap.style("visibility", "visible");
-        metroMap.style("visibility", "hidden");
-    });
-
-    $("#msa-select").click(function(event){
-        event.preventDefault();
-        metroMap.style("visibility", "visible");
-        stateMap.style("visibility", "hidden");
-    });
-
 }
-
-/*
-function cleanData(data) {
-
-            data.forEach(function(el){
-                el["DATE"] = +(19 + el["DATE"].substring(0,2));
-                el["YIELD"] = +el["YIELD"];
-                el["LAT"] = +el["LAT"];
-                el["LON"] = +el["LON"];
-            });
-}
-*/
