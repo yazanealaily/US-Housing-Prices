@@ -1,49 +1,45 @@
-// Canvas
-var margin = { top: 10, right: 0, bottom: 10, left: 0 };
+// Choropleth map object
+choroplethMap = function(_parentElement, _data1, _data2){
+    this.parentElement = _parentElement;
+    this.index_data = _data1;
+    this.topo_data = _data2;
+    this.displayData = []; // see data wrangling
 
-var width = 1000 - margin.left - margin.right;
-var height = 600 - margin.top - margin.bottom;
+    this.initVis();
+}
 
-var svg = d3.select("#map").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+choroplethMap.prototype.initVis = function() {
+    var vis = this;
 
-// Map settings
-var scale = 1150;
-var projection = d3.geo.albersUsa().scale(scale).translate([width/2, height/2]);
+    // Canvas
+    vis.margin = { top: 10, right: 0, bottom: 10, left: 0 };
 
-// Color spectrum
-var colors = colorbrewer.YlOrRd[9];
+    vis.width = 1000 - vis.margin.left - vis.margin.right;
+    vis.height = 600 - vis.margin.top - vis.margin.bottom;
 
-var quantize = d3.scale.quantize()
-    .range(colors);
+    vis.svg = d3.select("#" + vis.parentElement).append("svg")
+        .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-var stateMap, stateData;
+    // Map settings
+    var scale = 1100;
+    var projection = d3.geo.albersUsa().scale(scale).translate([vis.width/2 - 60, vis.height/2]);
 
-queue()
-    .defer(d3.json, "data/STATE.json")
-    .defer(d3.csv, "data/state-data.csv")
-    .await(initVis);
+    // Color spectrum
+    var colors = colorbrewer.YlOrRd[9];
 
-function initVis(error, STATE, DATA) {
-
-    // Clean housing data at state level
-    DATA.forEach(function(el){
-        cleanStateData(el);
-    });
-
-    // Save housing data at state level in global variable
-    stateData = DATA;
+    var quantize = d3.scale.quantize()
+        .range(colors);
 
     // Filter housing data (year = 2015, period - 4th quarter)
-    var filteredHPI = stateData.filter(function(el){
+    var filteredHPI = vis.index_data.filter(function(el){
         return (el.period === "4") && (el.yr === "2015");
     });
 
     // Merge housing index with topoJSON data
-    STATE.objects.STATE.geometries.forEach(function(el1){
+    vis.topo_data.objects.STATE.geometries.forEach(function(el1){
         filteredHPI.forEach(function(el2){
             if(el1.properties.STUSPS === el2.place_id) {
                 el1.properties.Housing_index = el2.index_nsa;
@@ -52,20 +48,20 @@ function initVis(error, STATE, DATA) {
     });
 
     // Set color domain
-
-    quantize.domain(d3.extent(STATE.objects.STATE.geometries, function(d) {return d.properties.Housing_index;}));
+    quantize.domain(d3.extent(vis.topo_data.objects.STATE.geometries, function(d) {return d.properties.Housing_index;}));
 
     // Draw choropleth map
-        var states = topojson.feature(STATE, STATE.objects.STATE).features;
+        var states = topojson.feature(vis.topo_data, vis.topo_data.objects.STATE).features;
 
-        stateMap =
-            svg.append("g")
-                .attr("class","states")
+        var stateMap =
+            vis.svg.append("g")
+                .attr("class","us-map")
                 .selectAll("path")
                 .data(states)
                 .enter()
                 .append("path")
                 .attr("d", d3.geo.path().projection(projection))
+                .attr("class", "us-state")
                 .style("fill", function(d) {
                         return quantize(d.properties.Housing_index);
                 })
@@ -75,13 +71,6 @@ function initVis(error, STATE, DATA) {
 
     // Add legend
 
-    // Debug
-        console.log(STATE);
-        console.log(filteredHPI);
-        console.log(stateData);
-        console.log(states);
 }
 
-function cleanStateData(element) {
-    element["index_nsa"] = +element["index_nsa"];
-}
+
