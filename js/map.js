@@ -14,8 +14,8 @@ choroplethMap.prototype.initVis = function() {
     // Canvas
     vis.margin = { top: 10, right: 0, bottom: 10, left: 0 };
 
-    vis.width = 1000 - vis.margin.left - vis.margin.right;
-    vis.height = 600 - vis.margin.top - vis.margin.bottom;
+    vis.width = 800 - vis.margin.left - vis.margin.right;
+    vis.height = 500 - vis.margin.top - vis.margin.bottom;
 
     vis.svg = d3.select("#" + vis.parentElement).append("svg")
         .attr("width", vis.width + vis.margin.left + vis.margin.right)
@@ -24,11 +24,11 @@ choroplethMap.prototype.initVis = function() {
         .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
     // Map settings
-    var scale = 1100;
-    var projection = d3.geo.albersUsa().scale(scale).translate([vis.width/2 - 60, vis.height/2]);
+    var scale = 1000;
+    var projection = d3.geo.albersUsa().scale(scale).translate([vis.width/2, vis.height/2]);
 
     // Color spectrum
-    var colors = colorbrewer.YlOrRd[9];
+    var colors = colorbrewer.Blues[9];
 
     var quantize = d3.scale.quantize()
         .range(colors);
@@ -53,7 +53,7 @@ choroplethMap.prototype.initVis = function() {
     // Draw choropleth map
         var states = topojson.feature(vis.topo_data, vis.topo_data.objects.STATE).features;
 
-        var stateMap =
+    vis.stateMap =
             vis.svg.append("g")
                 .attr("class","us-map")
                 .selectAll("path")
@@ -61,11 +61,12 @@ choroplethMap.prototype.initVis = function() {
                 .enter()
                 .append("path")
                 .attr("d", d3.geo.path().projection(projection))
-                .attr("class", "us-state")
                 .style("fill", function(d) {
                         return quantize(d.properties.Housing_index);
                 })
-                .style("stroke", "white");
+                .style("stroke", "white")
+                .on("mouseover", function(d) {d3.select(this).style("fill", "red")})
+                .on("mouseout", function(d) {d3.select(this).style("fill", quantize(d.properties.Housing_index))});
 
     // Add tooltip
 
