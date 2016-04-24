@@ -1,67 +1,165 @@
-// Canvas
-var margin = { top: 30, right: 0, bottom: 0, left: 0 };
+// Spider diagram object
+spiderDiagram = function(_parentElement){
+    this.parentElement = _parentElement;
+    this.initVis();
+}
 
-var width = 450 - margin.left - margin.right;
-var height = 400 - margin.top - margin.bottom;
+spiderDiagram.prototype.initVis = function() {
 
-var svg = d3.select("#spider-diagram").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var vis = this;
 
-//Spider diagram fixed components
+    // Canvas
+    vis.margin = {top: 30, right: 50, bottom: 0, left: 0};
 
-var radius = 150;
+    vis.width = 550 - vis.margin.left - vis.margin.right;
+    vis.height = 400 - vis.margin.top - vis.margin.bottom;
 
-var outerCircle = svg.append("circle")
-    .attr("cx", width/2)
-    .attr("cy", height/2)
-    .attr("r", radius);
+    vis.svg = d3.select("#spider-diagram").append("svg")
+        .attr("width", vis.width + vis.margin.left + vis.margin.right)
+        .attr("height", vis.height + vis.margin.top + vis.margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + vis.margin.left + "," + vis.margin.top + ")");
 
-var innerCircle1 = svg.append("circle")
-    .attr("cx", width/2)
-    .attr("cy", height/2)
-    .attr("r", radius * 0.75);
+    //Spider diagram circles and lines
 
-var innerCircle2 = svg.append("circle")
-    .attr("cx", width/2)
-    .attr("cy", height/2)
-    .attr("r", radius * 0.5);
+    vis.radius = 150;
 
-var innerCircle2 = svg.append("circle")
-    .attr("cx", width/2)
-    .attr("cy", height/2)
-    .attr("r", radius * 0.25);
+    vis.outerCircle = vis.svg.append("circle")
+        .attr("cx", vis.width / 2)
+        .attr("cy", vis.height / 2)
+        .attr("r", vis.radius);
 
-var housingLine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + width/2 + " " + (height/2 - radius));
+    vis.innerCircle1 = vis.svg.append("circle")
+        .attr("cx", vis.width / 2)
+        .attr("cy", vis.height / 2)
+        .attr("r", vis.radius * 0.75);
 
-var HDILine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + width/2 + " " + (height/2 + radius));
+    vis.innerCircle2 = vis.svg.append("circle")
+        .attr("cx", vis.width / 2)
+        .attr("cy", vis.height / 2)
+        .attr("r", vis.radius * 0.5);
 
-var GDPLine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + (width/2 - radius) + " " + height/2);
+    vis.innerCircle2 = vis.svg.append("circle")
+        .attr("cx", vis.width / 2)
+        .attr("cy", vis.height / 2)
+        .attr("r", vis.radius * 0.25);
 
-var priceOverIncomeLine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + (width/2 + radius) + " " + height/2);
+    vis.housingLine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + vis.width / 2 + " " + (vis.height / 2 - vis.radius));
 
-var rentLine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + (width/2 + radius / Math.sqrt(2)) + " " + (height/2 - radius / Math.sqrt(2)));
+    vis.HDILine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + vis.width / 2 + " " + (vis.height / 2 + vis.radius));
 
-var HPILine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + (width/2 - radius / Math.sqrt(2)) + " " + (height/2 - radius / Math.sqrt(2)));
+    vis.GDPLine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + (vis.width / 2 - vis.radius) + " " + vis.height / 2);
 
-var populationLine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + (width/2 - radius / Math.sqrt(2)) + " " + (height/2 + radius / Math.sqrt(2)));
+    vis.priceOverIncomeLine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + (vis.width / 2 + vis.radius) + " " + vis.height / 2);
 
-var incomeLine = svg.append("path")
-    .attr("d", "M " + width/2 + " " + height/2 + " L " + (width/2 + radius / Math.sqrt(2)) + " " + (height/2 + radius / Math.sqrt(2)));
+    vis.rentLine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + (vis.width / 2 + vis.radius / Math.sqrt(2)) + " " + (vis.height / 2 - vis.radius / Math.sqrt(2)));
+
+    vis.HPILine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + (vis.width / 2 - vis.radius / Math.sqrt(2)) + " " + (vis.height / 2 - vis.radius / Math.sqrt(2)));
+
+    vis.populationLine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + (vis.width / 2 - vis.radius / Math.sqrt(2)) + " " + (vis.height / 2 + vis.radius / Math.sqrt(2)));
+
+    vis.incomeLine = vis.svg.append("path")
+        .attr("d", "M " + vis.width / 2 + " " + vis.height / 2 + " L " + (vis.width / 2 + vis.radius / Math.sqrt(2)) + " " + (vis.height / 2 + vis.radius / Math.sqrt(2)));
+
+    // Spider diagram text
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2)
+        .attr("y", vis.height/2 - vis.radius - 10)
+        .attr("text-anchor", "middle")
+        .text("Median House Price")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2 + vis.radius / Math.sqrt(2))
+        .attr("y", vis.height/2 - vis.radius / Math.sqrt(2) - 10)
+        .attr("text-anchor", "start")
+        .text("Median Rent")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2 + vis.radius + 10)
+        .attr("y", vis.height/2 + 5)
+        .attr("text-anchor", "start")
+        .text("Price / Income")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2 + vis.radius / Math.sqrt(2) + 10)
+        .attr("y", vis.height/2 + vis.radius / Math.sqrt(2) + 10)
+        .attr("text-anchor", "start")
+        .text("Household Income")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2)
+        .attr("y", vis.height/2 + vis.radius + 20)
+        .attr("text-anchor", "middle")
+        .text("HDI")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2 - vis.radius / Math.sqrt(2) - 10)
+        .attr("y", vis.height/2 + vis.radius / Math.sqrt(2) + 10)
+        .attr("text-anchor", "end")
+        .text("Population")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2 - vis.radius  - 10)
+        .attr("y", vis.height/2 + 5)
+        .attr("text-anchor", "end")
+        .text("GDP")
+        .style("fill", "white");
+
+    vis.svg.append("text")
+        .attr("x", vis.width/2 - vis.radius / Math.sqrt(2) - 10)
+        .attr("y", vis.height/2 - vis.radius / Math.sqrt(2) - 10)
+        .attr("text-anchor", "end")
+        .text("Price Index")
+        .style("fill", "white");
+};
+
+spiderDiagram.prototype.drawPolygon = function(a, b) {
+
+    var vis = this;
+
+    var houseComp = a.median_house_price / b.median_house_price;
+    var rentComp = a.median_rent / b.median_rent;
+    var indexComp = (a.median_house_price / a.household_income) / 20; // Arbitrarily set 20 as max index
+    var incomeComp = a.household_income / b.household_income;
+    var HDIComp = a.HDI / b.HDI;
+    var popComp = a.population / b.population;
+    var GDPComp = a.GDP / b.GDP;
+    var HPIComp = a.house_price_index / b.house_price_index;
+
+    var result =
+        "M " + vis.width/2 + " " + (vis.height/2 - houseComp * vis.radius)
+        + " L " + (vis.width/2 + rentComp * vis.radius / Math.sqrt(2)) + " " + (vis.height/2 - rentComp * vis.radius / Math.sqrt(2))
+        + " L " + (vis.width/2 + indexComp * vis.radius) + " " + vis.height/2
+        + " L " + (vis.width/2 + incomeComp * vis.radius / Math.sqrt(2)) + " " + (vis.height/2 + incomeComp * vis.radius / Math.sqrt(2))
+        + " L " + vis.width/2 + " " + (vis.height/2 + vis.radius * HDIComp)
+        + " L " + (vis.width/2 - popComp * vis.radius / Math.sqrt(2)) + " " + (vis.height/2 + popComp * vis.radius / Math.sqrt(2))
+        + " L " + (vis.width/2 - GDPComp * vis.radius) + " " + vis.height/2
+        + " L " + (vis.width/2 - HPIComp * vis.radius / Math.sqrt(2)) + " " + (vis.height/2 - HPIComp * vis.radius / Math.sqrt(2)) + " Z";
+
+    return String(result);
+
+};
 
 
-//Test Case
+ //Test Case
+/*
 
-var baseCase = {
+
+ var baseCase = {
     median_house_price: 300,
     median_rent: 50,
     house_price_index: 120,
@@ -86,28 +184,4 @@ svg.append("path")
     .attr("d", drawPolygon(compCase, baseCase))
     .style("fill", "red")
     .style("opacity", "0.5");
-
-function drawPolygon(a, b) {
-
-    var houseComp = a.median_house_price / b.median_house_price;
-    var rentComp = a.median_rent / b.median_rent;
-    var indexComp = (a.median_house_price / a.household_income) / 20; // Arbitrarily set 20 as max index
-    var incomeComp = a.household_income / b.household_income;
-    var HDIComp = a.HDI / b.HDI;
-    var popComp = a.population / b.population;
-    var GDPComp = a.GDP / b.GDP;
-    var HPIComp = a.house_price_index / b.house_price_index;
-
-    var result =
-        "M " + width/2 + " " + (height/2 - houseComp * radius)
-        + " L " + (width/2 + rentComp * radius / Math.sqrt(2)) + " " + (height/2 - rentComp * radius / Math.sqrt(2))
-        + " L " + (width/2 + indexComp * radius) + " " + height/2
-        + " L " + (width/2 + incomeComp * radius / Math.sqrt(2)) + " " + (height/2 + incomeComp * radius / Math.sqrt(2))
-        + " L" + width/2 + " " + (height/2 + radius * HDIComp)
-        + " L" + (width/2 - popComp * radius / Math.sqrt(2)) + " " + (height/2 + popComp * radius / Math.sqrt(2))
-        + " L" + (width/2 - GDPComp * radius) + " " + height/2
-        + " L" + (width/2 - HPIComp * radius / Math.sqrt(2)) + " " + (height/2 - HPIComp * radius / Math.sqrt(2)) + " Z";
-
-    return String(result);
-}
-
+*/

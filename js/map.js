@@ -38,6 +38,8 @@ choroplethMap.prototype.initVis = function() {
         return (el.period === "4") && (el.yr === "2015");
     });
 
+    console.log(filteredHPI);
+
     // Merge housing index with topoJSON data
     vis.topo_data.objects.STATE.geometries.forEach(function(el1){
         filteredHPI.forEach(function(el2){
