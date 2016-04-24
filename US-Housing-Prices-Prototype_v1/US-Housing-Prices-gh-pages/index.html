@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Housing Prices in the US</title>
+
+    <!-- Load Google Font -->
+
+    <!-- CSS libraries -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <!-- Custom CSS code -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-8">
+            <!-- Visualization placeholders -->
+            <div id="map"></div>
+        </div>
+
+        <div class="col-md-4" id="dashboard">
+            <button class="btn">Housing Index</button>
+            <button class="btn">Comparison Mode</button>
+            <button class="btn">Chord Diagram</button>
+            <div id="spider-diagram"></div>
+        </div>
+    </div>
+
+</div>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Visualization placeholders -->
+            <div id=""></div>
+        </div>
+ 
+        <div class="col-md-6" id="dashboard">
+		<h2>US Housing Prices</h2>
+		</br>
+		<form id = "forms" class="form-inline">
+			<div class="form-group">
+				<label for="sortType">Sort by</label>
+				<select class="form-control" id="sort-type" onchange="ChordDiagram.prototype.wrangleData">
+					<option value="2005">2005</option>
+					<option value="2004">2004</option>
+					<option value="2003">2003</option>
+					<option value="2002">2002</option>
+					<option value="2001">2001</option>
+					<option value="2000">2000</option>
+					<option value="1999">1999</option>
+					<option value="1998">1998</option>
+				</select>
+			</div>
+			</form>
+            <div id="chord"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Load JS libraries -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/d3.min.js"></script>
+<script src="js/topojson.min.js"></script>
+<script src="js/queue.js"></script>
+<script src="js/colorbrewer.js"></script>
+
+<!-- Visualization objects -->
+
+<!-- Load data, create visualizations -->
+<script src="js/map.js"></script>
+<script src="js/chord.js"></script>
+<script src="js/spider-map.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

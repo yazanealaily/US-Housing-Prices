@@ -1,0 +1,11 @@
+path{
+    stroke: black;
+    stroke-width: .25px;
+}
+path.fade{
+    display: none;
+}
+body{
+    font-family: 'Rockwell Extra Bold';
+    font-size: medium;
+}
