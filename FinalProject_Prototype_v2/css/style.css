@@ -1,0 +1,106 @@
+/*********************************************************************************************************************
+GENERAL
+*********************************************************************************************************************/
+
+body {
+    background-color: #d5d5d5;
+}
+
+/*********************************************************************************************************************
+CHOROPLETH MAP
+*********************************************************************************************************************/
+
+
+/*********************************************************************************************************************
+SPIDER DIAGRAM
+*********************************************************************************************************************/
+
+#spider-diagram {
+    width: 550px;
+    height: 670px;
+    background-color: #46475b;
+
+}
+
+#spider-diagram circle {
+    fill: #92939b;
+    stroke: white;
+    stroke-width: 1.2;
+    opacity: 0.7;
+}
+
+#spider-diagram path {
+    stroke: white;
+    stroke-width: 1.2;
+}
+
+
+/*********************************************************************************************************************
+CHORD DIAGRAM
+*********************************************************************************************************************/
+
+#chord path{
+    stroke: black;
+    stroke-width: .25px;
+    opacity: 1.7;
+}
+#chord path.fade{
+    display: none;
+}
+#chord text{
+    font-family: 'Rockwell Extra Bold';
+    font-size: medium;
+    color: white;
+}
+
+#chord {
+    width: 550px;
+    height: 670px;
+    background-color: #46475b;
+}
+
+#drop-div{
+    padding-left: 60px;
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+/*********************/
+/*  TOOLTIP OVERLAY  */
+/*********************/
+
+.tooltip-title {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.d3-tip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
