@@ -8,8 +8,24 @@ spiderDiagram.prototype.initVis = function() {
 
     var vis = this;
 
+    // Spider diagram colors
+
+    vis.colors = colorbrewer.Paired[12];
+
+    // Spider diagram base case
+
+    vis.baseCase = {
+        median_house_price: 657083,
+        median_rent: 3144,
+        house_price_index: 768.71,
+        GDP: 2424.033,
+        population: 39144818,
+        HDI: 6.17,
+        household_income: 70004
+    };
+
     // Canvas
-    vis.margin = {top: 30, right: 50, bottom: 0, left: 0};
+    vis.margin = {top: 50, right: 50, bottom: 0, left: 0};
 
     vis.width = 550 - vis.margin.left - vis.margin.right;
     vis.height = 400 - vis.margin.top - vis.margin.bottom;
@@ -125,6 +141,14 @@ spiderDiagram.prototype.initVis = function() {
         .attr("text-anchor", "end")
         .text("Price Index")
         .style("fill", "white");
+
+    //Current state text
+    vis.stateName = vis.svg.append("text")
+                            .attr("x", vis.width/2)
+                            .attr("y", -20)
+                            .attr("text-anchor", "middle")
+                            .attr("font-size", 30)
+                            .style("fill", "white");
 };
 
 spiderDiagram.prototype.drawPolygon = function(a, b) {

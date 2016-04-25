@@ -1,19 +1,3 @@
-// Spider diagram base case + polygon path initiation
-
-// Base case = maximum values for each property across the US
-
-var baseCase = {
-    median_house_price: 657083,
-    median_rent: 3144,
-    house_price_index: 768.71,
-    GDP: 2424.033,
-    population: 39144818,
-    HDI: 6.17,
-    household_income: 70004
-};
-
-// Main
-
 queue()
     .defer(d3.json, "data/state-geo.json")
     .defer(d3.csv, "data/state-hpi.csv")
@@ -21,6 +5,8 @@ queue()
     .await(loadData);
 
 var stateHousing, stateTopo, stateProperties, clickedState;
+
+var colorCount = 0;
 
 function loadData(error, stateGeo, stateHPI, stateComp) {
 
@@ -60,17 +46,20 @@ function createVis() {
 
        var code = this.__data__.properties.STUSPS;
 
-       var userState = fetchComp(code);
+       fetchComp(code);
 
-       var path = spiderDiagram.drawPolygon(userState, baseCase);
+       var path = spiderDiagram.drawPolygon(clickedState, spiderDiagram.baseCase);
 
-        console.log(path);
+       colorCount += 1;
 
         spiderDiagram.svg.append("path")
             .attr("d", path)
             .attr("class", "polygon")
-            .style("fill", "red")
-            .style("opacity", "0.5");
+            .style("fill", spiderDiagram.colors[colorCount%12])
+            .style("opacity", "0.6")
+            .style("stroke-width", "2");
+
+        spiderDiagram.stateName.text(clickedState.name);
     });
 
 }
@@ -107,7 +96,6 @@ function fetchComp(code) {
 
     console.log(stateProp);
     console.log(clickedState);
-    return clickedState;
 }
 
 function reset() {
