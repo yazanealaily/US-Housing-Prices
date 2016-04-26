@@ -35,16 +35,6 @@ ChordDiagram.prototype.initVis = function(){
 
     vis.wrangleData(vis.data);
 
-    vis.tip = d3.tip()
-        .attr('class', 'd3-tip')
-        .offset([50,50])
-        .html(function(d) {
-            return d.source.value;
-        })
-
-
-    vis.svg.call(vis.tip);
-
     vis.chord = d3.layout.chord()
         .padding(.1)
         .sortSubgroups(d3.descending)
@@ -95,8 +85,7 @@ ChordDiagram.prototype.initVis = function(){
         .attr("d", d3.svg.chord().radius(vis.innerRadius))
         .style("fill", function(d) { return vis.fill(d.source.subindex); })
         .style("stroke", function(d){ return "#000";})
-        .on('mouseover', vis.tip.show)
-        .on('mouseout', vis.tip.hide);
+
 
     vis.chords
         .transition()
@@ -129,13 +118,15 @@ ChordDiagram.prototype.wrangleData = function(data) {
 
     var vis = this;
 
+    console.log(data)
+
     vis.yearSelected = data.filter(function (d) {
         return d.Year == d3.select("#sort-type").property("value");
     });
 
     console.log(vis.yearSelected)
 
-    for (datum in vis.yearSelected){
+    for (var datum in vis.yearSelected){
         delete vis.yearSelected[datum].Year;
     }
 

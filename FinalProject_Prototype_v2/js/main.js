@@ -1,16 +1,3 @@
-// Spider diagram base case + polygon path initiation
-
-// Base case = maximum values for each property across the US
-var baseCase = {
-    median_house_price: 657083,
-    median_rent: 3144,
-    house_price_index: 768.71,
-    GDP: 2424.033,
-    population: 39144818,
-    HDI: 6.17,
-    household_income: 70004
-};
-
 // Stores data for Chord Diagram
 var chordData;
 
@@ -29,6 +16,12 @@ queue()
 
 // Stores Map and Spider Diagram Data
 var stateHousing, stateTopo, stateProperties, clickedState;
+
+// Spider diagram color variable
+var colorCount = 0;
+
+// Used to keep track of number of states selected (max 2)
+var clickCount = 0;
 
 // Variables for the Map and Spider Diagram visualization instances
 var choroplethMap, spiderDiagram ;
@@ -84,15 +77,20 @@ function createVis() {
 
        var userState = fetchComp(code);
 
-       var path = spiderDiagram.drawPolygon(userState, baseCase);
+       var path = spiderDiagram.drawPolygon(userState, spiderDiagram.baseCase);
 
         console.log(path);
+
+        colorCount += 1;
 
         spiderDiagram.svg.append("path")
             .attr("d", path)
             .attr("class", "polygon")
-            .style("fill", "red")
-            .style("opacity", "0.5");
+            .style("fill", spiderDiagram.colors[colorCount%12])
+            .style("opacity", "0.6")
+            .style("stroke-width", "2");
+
+        //spiderDiagram.stateName.text(clickedState.name);
     });
 
 }
@@ -123,33 +121,70 @@ function cleanComp(element) {
 
 function fetchComp(code) {
 
-    var stateProp = stateProperties.filter(function(el) {return el["state_code"] === code});
-    var stateIndex = stateHousing.filter(function(el) {return (el.place_id === code) && (el.period === "4") && (el.yr === "2015")});
+    if (clickCount < 2){
 
-    clickedState = {};
+        var stateProp = stateProperties.filter(function(el) {return el["state_code"] === code});
+        var stateIndex = stateHousing.filter(function(el) {return (el.place_id === code) && (el.period === "4") && (el.yr === "2015")});
 
-    clickedState.name = stateProp[0].state;
-    clickedState.GDP = stateProp[0].gdp;
-    clickedState.HDI = stateProp[0].hdi;
-    clickedState.median_house_price = stateProp[0].median_house_price;
-    clickedState.median_rent = stateProp[0].median_rent;
-    clickedState.household_income = stateProp[0].median_household_income;
-    clickedState.population = stateProp[0].population;
-    clickedState.house_price_index = stateIndex[0].index_nsa;
+        clickedState = {};
 
-    console.log(stateProp);
-    console.log(clickedState);
-    return clickedState;
+        clickedState.name = stateProp[0].state;
+        clickedState.GDP = stateProp[0].gdp;
+        clickedState.HDI = stateProp[0].hdi;
+        clickedState.median_house_price = stateProp[0].median_house_price;
+        clickedState.median_rent = stateProp[0].median_rent;
+        clickedState.household_income = stateProp[0].median_household_income;
+        clickedState.population = stateProp[0].population;
+        clickedState.house_price_index = stateIndex[0].index_nsa;
+
+
+        clickCount += 1;
+
+        document.getElementById("state" + clickCount).textContent=stateProp[0].state;
+        document.getElementById("mhp" + clickCount).textContent=stateProp[0].median_house_price;
+        document.getElementById("md" + clickCount).textContent=stateProp[0].median_rent;
+        document.getElementById("pi" + clickCount).textContent=(stateProp[0].median_house_price/stateProp[0].median_household_income).toFixed(2);
+        document.getElementById("hi" + clickCount).textContent=stateProp[0].median_household_income;
+        document.getElementById("hd" + clickCount).textContent=stateProp[0].hdi;
+        document.getElementById("p" + clickCount).textContent=stateProp[0].population;
+        document.getElementById("gdp" + clickCount).textContent=stateProp[0].gdp;
+        document.getElementById("pidx" + clickCount).textContent=stateIndex[0].index_nsa;
+
+
+        console.log(stateProp);
+        console.log(clickedState);
+        return clickedState;
+
+    }
+    else{
+        alert("Maximum of two states. Please click reset in order to make additional comparisons");
+
+    }
 }
 
 function reset() {
 
     spiderDiagram.svg.selectAll(".polygon").remove();
+    clickCount = 0;
+
+    for (var i = 1; i < 3; i++) {
+        document.getElementById("state" + i).textContent= "State" + i;
+        document.getElementById("mhp" + i).textContent="";
+        document.getElementById("md" + i).textContent="";
+        document.getElementById("pi" + i).textContent="";
+        document.getElementById("hi" + i).textContent="";
+        document.getElementById("hd" + i).textContent="";
+        document.getElementById("p" + i).textContent="";
+        document.getElementById("gdp" + i).textContent="";
+        document.getElementById("pidx" + i).textContent="";
+    }
 }
 
 
 // Changes Visualization to Chord Diagram
 function changeToChordVis(){
+
+    reset();
 
     if (document.getElementById("spider-diagram")) {
 
@@ -158,6 +193,8 @@ function changeToChordVis(){
         var chord = document.createElement("div");
         var dropDiv = document.createElement("div");
         var dropdown = document.createElement("select")
+        var buttonDiv = document.createElement("div");
+        var button = document.createElement("input");
 
         var op02 = new Option();
         var op03 = new Option();
@@ -175,8 +212,18 @@ function changeToChordVis(){
         var op15 = new Option();
 
 
+        button.setAttribute("id", "reset")
+        button.setAttribute('type','button');
+        button.setAttribute('name','rest');
+        button.setAttribute('value','Reset');
+        button.onclick = reset;
+
+        buttonDiv.setAttribute("id", "button-div")
+
         dropDiv.setAttribute("id", "drop-div")
-        dropDiv.setAttribute("class", "col-xs-4")
+        dropDiv.setAttribute("class", "col-xs-6")
+
+        chord.setAttribute("style","height:500px");
 
         dropdown.setAttribute("id", "sort-type")
         dropdown.setAttribute("class", "form-control row")
@@ -246,6 +293,10 @@ function changeToChordVis(){
 
         parent.appendChild(chord);
 
+        document.getElementById("chord").appendChild(buttonDiv);
+
+        document.getElementById("button-div").appendChild(button);
+
         document.getElementById("chord").appendChild(dropDiv);
 
         document.getElementById("drop-div").appendChild(dropdown);
@@ -263,10 +314,12 @@ function changeToSpiderVis(){
         var parent = document.getElementById("dashboard");
         var child = document.getElementById("chord");
         var spider = document.createElement("div");
+        var spiderSvg = document.createElement("svg");
         var buttonDiv = document.createElement("div");
         var button = document.createElement("input");
 
         spider.setAttribute("id", "spider-diagram");
+        spider.setAttribute("style","height:500px");
 
         button.setAttribute("id", "reset")
         button.setAttribute('type','button');
@@ -281,6 +334,8 @@ function changeToSpiderVis(){
         parent.appendChild(spider);
 
         document.getElementById("spider-diagram").appendChild(buttonDiv);
+
+        document.getElementById("spider-diagram").appendChild(spiderSvg);
 
         document.getElementById("button-div").appendChild(button);
 
