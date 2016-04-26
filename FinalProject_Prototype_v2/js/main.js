@@ -24,7 +24,7 @@ var colorCount = 0;
 var clickCount = 0;
 
 // Variables for the Map and Spider Diagram visualization instances
-var choroplethMap, spiderDiagram ;
+var choroplethMap, spiderDiagram, hpiDiagram ;
 
 function loadData(error, stateGeo, stateHPI, stateComp) {
 
@@ -186,10 +186,19 @@ function changeToChordVis(){
 
     reset();
 
-    if (document.getElementById("spider-diagram")) {
+    if (!document.getElementById("chord")) {
 
         var parent = document.getElementById("dashboard");
-        var child = document.getElementById("spider-diagram");
+        var child;
+
+        if (document.getElementById("bar-chart")) {
+            child = document.getElementById("bar-chart")
+        } else if (document.getElementById("spider-diagram")) {
+            child = document.getElementById("spider-diagram")
+        } else if (document.getElementById("chord")) {
+            child = document.getElementById("chord")
+        }
+
         var chord = document.createElement("div");
         var dropDiv = document.createElement("div");
         var dropdown = document.createElement("select")
@@ -212,78 +221,78 @@ function changeToChordVis(){
         var op15 = new Option();
 
 
-        button.setAttribute("id", "reset")
+        button.setAttribute("id", "reset");
         button.setAttribute('type','button');
         button.setAttribute('name','rest');
         button.setAttribute('value','Reset');
         button.onclick = reset;
 
-        buttonDiv.setAttribute("id", "button-div")
+        buttonDiv.setAttribute("id", "button-div");
 
-        dropDiv.setAttribute("id", "drop-div")
-        dropDiv.setAttribute("class", "col-xs-6")
+        dropDiv.setAttribute("id", "drop-div");
+        dropDiv.setAttribute("class", "col-xs-6");
 
         chord.setAttribute("style","height:500px");
 
-        dropdown.setAttribute("id", "sort-type")
-        dropdown.setAttribute("class", "form-control row")
+        dropdown.setAttribute("id", "sort-type");
+        dropdown.setAttribute("class", "form-control row");
         dropdown.onchange = updateChordVisualization;
 
-        op15.value = 2015
+        op15.value = 2015;
         op15.text = "2015";
         dropdown.options.add(op15);
 
-        op14.value = 2014
+        op14.value = 2014;
         op14.text = "2014";
         dropdown.options.add(op14);
 
-        op13.value = 2013
+        op13.value = 2013;
         op13.text = "2013";
         dropdown.options.add(op13);
 
-        op12.value = 2012
+        op12.value = 2012;
         op12.text = "2012";
         dropdown.options.add(op12);
 
-        op11.value = 2011
+        op11.value = 2011;
         op11.text = "2011";
         dropdown.options.add(op11);
 
 
-        op10.value = 2010
+        op10.value = 2010;
         op10.text = "2010";
         dropdown.options.add(op10);
 
-        op09.value = 2009
+        op09.value = 2009;
         op09.text = "2009";
         dropdown.options.add(op09);
 
-        op08.value = 2008
+        op08.value = 2008;
         op08.text = "2008";
         dropdown.options.add(op08);
 
-        op07.value = 2007
+        op07.value = 2007;
         op07.text = "2007";
         dropdown.options.add(op07);
 
-        op06.value = 2006
+        op06.value = 2006;
         op06.text = "2006";
         dropdown.options.add(op06);
 
 
-        op05.value = 2005
+        op05.value = 2005;
         op05.text = "2005";
         dropdown.options.add(op05);
 
-        op04.value = 2004
+        op04.value = 2004;
         op04.text = "2004";
         dropdown.options.add(op04);
 
-        op03.value = 2003
+        op03.value = 2003;
         op03.text = "2003";
         dropdown.options.add(op03);
 
-        op02.value = 2002
+        op02.value = 2002;
         op02.text = "2002";
         dropdown.options.add(op02);
 
@@ -309,10 +318,21 @@ function changeToChordVis(){
 
 function changeToSpiderVis(){
 
-    if (document.getElementById("chord")) {
+    if (!document.getElementById("spider-diagram")) {
+
+        reset();
 
         var parent = document.getElementById("dashboard");
-        var child = document.getElementById("chord");
+        var child;
+
+        if (document.getElementById("bar-chart")) {
+            child = document.getElementById("bar-chart")
+        } else if (document.getElementById("spider-diagram")) {
+            child = document.getElementById("spider-diagram")
+        } else if (document.getElementById("chord")) {
+            child = document.getElementById("chord")
+        }
+
         var spider = document.createElement("div");
         var spiderSvg = document.createElement("svg");
         var buttonDiv = document.createElement("div");
@@ -321,13 +341,13 @@ function changeToSpiderVis(){
         spider.setAttribute("id", "spider-diagram");
         spider.setAttribute("style","height:500px");
 
-        button.setAttribute("id", "reset")
+        button.setAttribute("id", "reset");
         button.setAttribute('type','button');
         button.setAttribute('name','rest');
         button.setAttribute('value','Reset');
         button.onclick = reset;
 
-        buttonDiv.setAttribute("id", "button-div")
+        buttonDiv.setAttribute("id", "button-div");
 
         parent.removeChild(child);
 
@@ -342,4 +362,38 @@ function changeToSpiderVis(){
         spiderDiagram = new SpiderDiagram("spider-diagram");
     }
 
+}
+
+function changeToBarChart(){
+
+    if (!document.getElementById("bar-chart")) {
+
+        reset();
+
+        var parent = document.getElementById("dashboard");
+        var child;
+
+        if (document.getElementById("bar-chart")) {
+            child = document.getElementById("bar-chart")
+        } else if (document.getElementById("spider-diagram")) {
+            child = document.getElementById("spider-diagram")
+        } else if (document.getElementById("chord")) {
+            child = document.getElementById("chord")
+        }
+
+        var hpiBarChart = document.createElement("div");
+        var hpiBarChartSvg = document.createElement("svg");
+
+        hpiBarChart.setAttribute("id", "bar-chart");
+
+        parent.removeChild(child);
+
+        parent.appendChild(hpiBarChart);
+
+        document.getElementById("bar-chart").appendChild(hpiBarChartSvg);
+
+        console.log("so far, so good...");
+
+        hpiDiagram = new HPIDiagram("bar-chart",stateHousing);
+    }
 }
