@@ -25,11 +25,110 @@
         </div>
 
         <div class="col-md-5" id="dashboard">
-            <button class="btn">Housing Index</button>
-            <button class="btn">Comparison Mode</button>
-            <button class="btn">Chord Diagram</button>
+            <button class="btn" onclick="changeToBarChart()">Housing Index</button>
+            <button class="btn" onclick="changeToSpiderVis()" >Comparison Mode</button>
+            <button class="btn" onclick="changeToChordVis()">Chord Diagram</button>
             <div id="spider-diagram">
                 <button class="btn" onclick="reset()">Reset</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-7"></div>
+
+        <div class="col-md-5">
+            <div class="col-lg-12" id="table" style="height: 375px;">
+                <div class="col-md-6">
+                    <p id="state1">State 1</p>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Median House Price</td>
+                            <td id="mhp1"></td>
+                        </tr>
+                        <tr>
+                            <td>Median Rent</td>
+                            <td id="md1"></td>
+                        </tr>
+                        <tr>
+                            <td>Price/Income</td>
+                            <td id="pi1"></td>
+                        </tr>
+                        <tr>
+                            <td>Household Income</td>
+                            <td id="hi1"></td>
+                        </tr>
+                        <tr>
+                            <td>HDI</td>
+                            <td id="hd1"></td>
+                        </tr>
+                        <tr>
+                            <td>Population</td>
+                            <td id="p1"></td>
+                        </tr>
+                        <tr>
+                            <td>GDP</td>
+                            <td id="gdp1"></td>
+                        </tr>
+                        <tr>
+                            <td>Price Index</td>
+                            <td id="pidx1"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <p id="state2">State 2</p>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Median House Price</td>
+                            <td id="mhp2"></td>
+                        </tr>
+                        <tr>
+                            <td>Median Rent</td>
+                            <td id="md2"></td>
+                        </tr>
+                        <tr>
+                            <td>Price/Income</td>
+                            <td id="pi2"></td>
+                        </tr>
+                        <tr>
+                            <td>Household Income</td>
+                            <td id="hi2"></td>
+                        </tr>
+                        <tr>
+                            <td>HDI</td>
+                            <td id="hd2"></td>
+                        </tr>
+                        <tr>
+                            <td>Population</td>
+                            <td id="p2"></td>
+                        </tr>
+                        <tr>
+                            <td>GDP</td>
+                            <td id="gdp2"></td>
+                        </tr>
+                        <tr>
+                            <td>Price Index</td>
+                            <td id="pidx2"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -40,6 +139,7 @@
 <script src="js/jquery.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/d3.min.js"></script>
+<script src="js/d3.tip.js"></script>
 <script src="js/topojson.min.js"></script>
 <script src="js/queue.js"></script>
 <script src="js/colorbrewer.js"></script>
@@ -48,7 +148,9 @@
 
 <!-- Load data, create visualizations -->
 <script src="js/map.js"></script>
+<script src="js/chord.js"></script>
 <script src="js/spider-map.js"></script>
+<script src="js/bar-chart.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
