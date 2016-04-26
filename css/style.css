@@ -19,7 +19,7 @@ SPIDER DIAGRAM
     width: 550px;
     height: 670px;
     background-color: #46475b;
-    opacity: 0.7;
+
 }
 
 #spider-diagram circle {
@@ -38,3 +38,118 @@ SPIDER DIAGRAM
 /*********************************************************************************************************************
 CHORD DIAGRAM
 *********************************************************************************************************************/
+
+#chord path{
+    stroke: black;
+    stroke-width: .25px;
+    opacity: 1.7;
+}
+#chord path.fade{
+    display: none;
+}
+#chord text{
+    font-family: 'Rockwell Extra Bold';
+    font-size: medium;
+    color: white;
+}
+
+#chord {
+    width: 550px;
+    height: 670px;
+    background-color: #46475b;
+}
+
+#drop-div{
+    padding-left: 100px;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+/*********************/
+/*  TOOLTIP OVERLAY  */
+/*********************/
+
+.tooltip-title {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.d3-tip {
+    line-height: 1;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+    box-sizing: border-box;
+    display: inline;
+    font-size: 10px;
+    width: 100%;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.8);
+    content: "\25BC";
+    position: absolute;
+    text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+    margin: -1px 0 0 0;
+    top: 100%;
+    left: 0;
+}
+
+/*********************************************************************************************************************
+Table
+*********************************************************************************************************************/
+
+#table {
+    width: 550px;
+    color: white;
+    font-size: small;
+    background-color: #46475b;
+}
+
+#table p{
+    font-size: medium;
+    text-align: center;
+}
+
+/****************/
+/*   BAR-CHART  */
+/****************/
+
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: brown;
+}
+
+.axis text {
+    font: 8px "GE Inspira";
+}
+.y-axis{
+    font: 14px "GE Inspira";
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x-axis path {
+    display: none;
+}
+
+.axis-title {
+    fill: #888;
+    font-size: 11px;
+}
