@@ -25,11 +25,11 @@
         </div>
 
         <div class="col-md-5" id="dashboard">
-            <button class="btn" >Housing Index</button>
+            <button class="btn" onclick="changeToBarChart()">Housing Index</button>
             <button class="btn" onclick="changeToSpiderVis()" >Comparison Mode</button>
             <button class="btn" onclick="changeToChordVis()">Chord Diagram</button>
-            <div id="spider-diagram" style="height: 500px;">
-                <button class="input" onclick="reset()">Reset</button>
+            <div id="spider-diagram">
+                <button class="btn" onclick="reset()">Reset</button>
             </div>
         </div>
     </div>
@@ -150,6 +150,7 @@
 <script src="js/map.js"></script>
 <script src="js/chord.js"></script>
 <script src="js/spider-map.js"></script>
+<script src="js/bar-chart.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
