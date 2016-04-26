@@ -119,3 +119,37 @@ Table
     font-size: medium;
     text-align: center;
 }
+
+/****************/
+/*   BAR-CHART  */
+/****************/
+
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: brown;
+}
+
+.axis text {
+    font: 8px "GE Inspira";
+}
+.y-axis{
+    font: 14px "GE Inspira";
+}
+.axis path,
+.axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+
+.x-axis path {
+    display: none;
+}
+
+.axis-title {
+    fill: #888;
+    font-size: 11px;
+}
