@@ -42,7 +42,6 @@ CHORD DIAGRAM
 #chord path{
     stroke: black;
     stroke-width: .25px;
-    opacity: 1.7;
 }
 #chord path.fade{
     display: none;
@@ -124,6 +123,15 @@ Table
 /*   BAR-CHART  */
 /****************/
 
+#bar-chart{
+    width: 550px;
+    height: 500px;
+    background-color: #46475b;
+    color: white;
+}
+
+
+
 .bar {
     fill: steelblue;
 }
@@ -134,10 +142,12 @@ Table
 
 .axis text {
     font: 8px "GE Inspira";
+    color: white;
 }
 .y-axis{
     font: 14px "GE Inspira";
 }
+
 .axis path,
 .axis line {
     fill: none;

@@ -118,6 +118,8 @@ ChordDiagram.prototype.wrangleData = function(data) {
 
     var vis = this;
 
+    var state;
+
     console.log(data)
 
     vis.yearSelected = data.filter(function (d) {
@@ -126,6 +128,129 @@ ChordDiagram.prototype.wrangleData = function(data) {
 
     console.log(vis.yearSelected)
 
+    console.log(firstClickedStateRegion)
+    console.log(secondClickedStateRegion)
+
+    // Filter chord diagram by state(s) selected
+    if (firstClickedStateRegion != null && (secondClickedStateRegion == "" || secondClickedStateRegion == firstClickedStateRegion)){
+        if (firstClickedStateRegion == "Northeast"){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].South;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if (firstClickedStateRegion == "West"){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].South;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if (firstClickedStateRegion == "South"){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if (firstClickedStateRegion == "Midwest"){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+    }
+    else if (firstClickedStateRegion != "" && secondClickedStateRegion != ""){
+        if ((firstClickedStateRegion == "Northeast" && secondClickedStateRegion == "West") ||
+              (firstClickedStateRegion == "West" && secondClickedStateRegion == "Northeast") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].South;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if ((firstClickedStateRegion == "Northeast" && secondClickedStateRegion == "South") ||
+            (firstClickedStateRegion == "South" && secondClickedStateRegion == "Northeast") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if ((firstClickedStateRegion == "Northeast" && secondClickedStateRegion == "Midwest") ||
+            (firstClickedStateRegion == "Midwest" && secondClickedStateRegion == "Northeast") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+        else if ((firstClickedStateRegion == "West" && secondClickedStateRegion == "South") ||
+            (firstClickedStateRegion == "South" && secondClickedStateRegion == "West") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if ((firstClickedStateRegion == "West" && secondClickedStateRegion == "Midwest") ||
+            (firstClickedStateRegion == "Midwest" && secondClickedStateRegion == "West") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+        else if ((firstClickedStateRegion == "West" && secondClickedStateRegion == "Northeast") ||
+            (firstClickedStateRegion == "Northeast" && secondClickedStateRegion == "West") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].South;
+                delete vis.yearSelected[datum].Midwest;
+            }
+        }
+        else if ((firstClickedStateRegion == "South" && secondClickedStateRegion == "Midwest") ||
+            (firstClickedStateRegion == "Midwest" && secondClickedStateRegion == "South") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].West;
+            }
+        }
+        else if ((firstClickedStateRegion == "South" && secondClickedStateRegion == "West") ||
+            (firstClickedStateRegion == "West" && secondClickedStateRegion == "South") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+        else if ((firstClickedStateRegion == "South" && secondClickedStateRegion == "Northeast") ||
+            (firstClickedStateRegion == "Northeast" && secondClickedStateRegion == "South") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+        else if ((firstClickedStateRegion == "Midwest" && secondClickedStateRegion == "West") ||
+            (firstClickedStateRegion == "West" && secondClickedStateRegion == "Midwest") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+        else if ((firstClickedStateRegion == "Midwest" && secondClickedStateRegion == "Northeast") ||
+            (firstClickedStateRegion == "Northeast" && secondClickedStateRegion == "Midwest") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].West;
+                delete vis.yearSelected[datum].South;
+            }
+        }
+        else if ((firstClickedStateRegion == "Midwest" && secondClickedStateRegion == "South") ||
+            (firstClickedStateRegion == "South" && secondClickedStateRegion == "Midwest") ){
+            for (var datum in vis.yearSelected){
+                delete vis.yearSelected[datum].Northeast;
+                delete vis.yearSelected[datum].West;
+            }
+        }
+
+    }
+
+    // Filter chord diagram by year
     for (var datum in vis.yearSelected){
         delete vis.yearSelected[datum].Year;
     }

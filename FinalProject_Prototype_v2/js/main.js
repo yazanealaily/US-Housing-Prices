@@ -15,7 +15,7 @@ queue()
 
 
 // Stores Map and Spider Diagram Data
-var stateHousing, stateTopo, stateProperties, clickedState;
+var stateHousing, stateTopo, stateProperties, clickedState, firstState, secondState, firstClickedStateRegion = "", secondClickedStateRegion = "";
 
 // Spider diagram color variable
 var colorCount = 0;
@@ -137,8 +137,20 @@ function fetchComp(code) {
         clickedState.population = stateProp[0].population;
         clickedState.house_price_index = stateIndex[0].index_nsa;
 
-
         clickCount += 1;
+
+        // Stop the user from choosing the same two state
+        if (clickCount == 1){
+            firstState = stateProp[0].state;
+        }
+        else{
+            secondState = stateProp[0].state;
+            if (firstState == secondState){
+                alert("Please choose a different second state to compare.");
+                clickCount -= 1;
+                end();
+            }
+        }
 
         document.getElementById("state" + clickCount).textContent=stateProp[0].state;
         document.getElementById("mhp" + clickCount).textContent=stateProp[0].median_house_price;
@@ -149,6 +161,22 @@ function fetchComp(code) {
         document.getElementById("p" + clickCount).textContent=stateProp[0].population;
         document.getElementById("gdp" + clickCount).textContent=stateProp[0].gdp;
         document.getElementById("pidx" + clickCount).textContent=stateIndex[0].index_nsa;
+
+        if (document.getElementById("chord")){
+
+            if (clickCount == 1){
+                firstClickedStateRegion = stateProp[0].region;
+                console.log(firstClickedStateRegion);
+                document.getElementById("state" + clickCount).textContent=stateProp[0].state + " - (" + firstClickedStateRegion + ")";
+            }
+            else {
+                secondClickedStateRegion = stateProp[0].region;
+                console.log(secondClickedStateRegion);
+                document.getElementById("state" + clickCount).textContent=stateProp[0].state + " - (" + secondClickedStateRegion + ")";
+            }
+
+            updateChordVisualization();
+        }
 
 
         console.log(stateProp);
@@ -166,6 +194,8 @@ function reset() {
 
     spiderDiagram.svg.selectAll(".polygon").remove();
     clickCount = 0;
+    firstClickedStateRegion = "";
+    secondClickedStateRegion = "";
 
     for (var i = 1; i < 3; i++) {
         document.getElementById("state" + i).textContent= "State" + i;
@@ -177,6 +207,10 @@ function reset() {
         document.getElementById("p" + i).textContent="";
         document.getElementById("gdp" + i).textContent="";
         document.getElementById("pidx" + i).textContent="";
+    }
+
+    if (document.getElementById("chord")){
+        updateChordVisualization();
     }
 }
 
